@@ -12,7 +12,7 @@ SECRET_KEY = os.urandom(32)
 app.config["SECRET_KEY"] = SECRET_KEY
 
 #User database
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///users.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///database.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
@@ -20,7 +20,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, index=True)
     hashed_password = db.Column(db.String(150))
-    date_joined = db.Column(db.DateTime(), default = datetime.utcnow, index=True)
+    date_joined = db.Column(db.DateTime(), default=datetime.now, index=True)
 
     def create_password_hash(self, password):
         self.hashed_password = generate_password_hash(password)
