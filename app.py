@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, request, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import LoginForm, RegistrationForm
@@ -14,6 +14,7 @@ app.config["SECRET_KEY"] = SECRET_KEY
 #Login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = "login"
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -74,6 +75,13 @@ def about():
 @login_required
 def tracker():
     return "Hello, logged in user!"
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("home"))
+
 
 
 if __name__ == "__main__":
