@@ -4,7 +4,7 @@ from flask_login import LoginManager, UserMixin, current_user, login_user, login
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import LoginForm, RegistrationForm
-import sqlite3
+from sqlalchemy.exc import IntegrityError
 import os
 app = Flask(__name__)
 
@@ -71,12 +71,16 @@ def register():
 
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(email=form.email.data)
-        user.create_password_hash(form.password1.data)
-        db.session.add(user)
-        db.session.commit()
-        flash("Account created!", "success")
-        return redirect(url_for("login"))
+        try: 
+            user = User(email=form.email.data)
+            user.create_password_hash(form.password1.data)
+            db.session.add(user)
+            db.session.commit()
+            flash("Account created!", "success")
+            return redirect(url_for("login"))
+        except IntegrityError:
+            db.session.rollback()
+            flash("User with this e-mail adress already exists!", "danger")
     return render_template("register.html", title="Register", form=form)
 
 @app.route("/about")
