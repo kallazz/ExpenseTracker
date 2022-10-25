@@ -68,7 +68,7 @@ def register():
     if current_user.is_active:
         flash("You are already logged in", "warning")
         return redirect(url_for("home"))
-        
+
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(email=form.email.data)
@@ -83,10 +83,15 @@ def register():
 def about():
     return render_template("about.html", title="About")
 
-@app.route("/tracker")
+@app.route("/add")
 @login_required
-def tracker():
-    return "Hello, logged in user!"
+def add():
+    return render_template("add.html", title="Add expense")
+
+@app.route("/show")
+@login_required
+def show():
+    return render_template("show.html", title="Add expenses")
 
 @app.route("/logout")
 @login_required

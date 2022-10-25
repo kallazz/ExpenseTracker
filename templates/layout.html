@@ -14,11 +14,19 @@
     <nav class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="{{ url_for('home') }}">ExpenseTracker</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
+              {% if current_user.is_active %}
+                <li class="nav-item">
+                  <a class="nav-link {% if title =='Add expense' %} active {% endif %}" href="{{ url_for('add') }}">Add</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if title =='Show expenses' %} active {% endif %}" href="{{ url_for('show') }}">Show</a>
+                </li>
+              {% endif %}
               {% if current_user.is_anonymous %}
                 <li class="nav-item">
                   <a class="nav-link {% if title =='Login' %} active {% endif %}" href="{{ url_for('login') }}">Login</a>
@@ -38,7 +46,7 @@
                 </li>
               {% endif %}
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
                     🇵🇱 / 🇬🇧
                 </a>
                 <ul class="dropdown-menu">
