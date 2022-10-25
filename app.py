@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, request, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask_login import LoginManager, UserMixin, current_user, login_user, login_required, logout_user
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import LoginForm, RegistrationForm
@@ -15,6 +15,7 @@ app.config["SECRET_KEY"] = SECRET_KEY
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+login_manager.login_message_category = "warning"
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -45,6 +46,10 @@ def home():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if current_user.is_active:
+        flash("You are already logged in", "warning")
+        return redirect(url_for("home"))
+
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -60,6 +65,10 @@ def login():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if current_user.is_active:
+        flash("You are already logged in", "warning")
+        return redirect(url_for("home"))
+        
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(email=form.email.data)
