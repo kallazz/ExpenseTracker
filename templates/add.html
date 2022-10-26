@@ -1,3 +1,33 @@
 {% extends "layout.html" %}
 {% block content %}
+    <div class="container d-flex align-items-center justify-content-center" id="main_container">
+        <div class="form-box border border-4 border-primary rounded p-3 w-50">
+            <h4>Add a new Expense</h4>
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.date_added.label }}
+                    {{ form.date_added(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.price.label }}
+                    {{ form.price(class="form-control", step="0.5") }}
+                </div>
+                <div class="form-group">
+                    {{ form.product.label }}
+                    {{ form.product(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.expense_type.label }}
+                    {{ form.expense_type(class="form-select") }}
+                </div>
+                <div class="form-group">
+                    {{ form.vendor.label }}
+                    {{ form.vendor(class="form-control") }}
+                </div>
+                {{ form.submit(class="btn btn-primary mt-1") }}
+            </form>
+            <small>Don't have an account yet? <a href="{{ url_for('register') }}">Register here</a></small>
+        </div>
+    </div>
 {% endblock %}

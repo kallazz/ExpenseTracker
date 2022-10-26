@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, current_user, login_user, login_required, logout_user
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import LoginForm, RegistrationForm
+from forms import ExpenseForm, LoginForm, RegistrationForm
 from sqlalchemy.exc import IntegrityError
 import os
 app = Flask(__name__)
@@ -21,7 +21,7 @@ login_manager.login_message_category = "warning"
 def load_user(user_id):
     return User.query.get(user_id)
 
-#User database
+#Database
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///database.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
@@ -37,6 +37,15 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
+
+class Expense(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date_added = db.Column(db.DateTime(), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    product = db.Column(db.String(150), nullable=False)
+    expense_type = db.Column(db.String(10), nullable=False)
+    vendor = db.Column(db.String(150), nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
 
 #Views
 @app.route("/")
@@ -90,12 +99,13 @@ def about():
 @app.route("/add")
 @login_required
 def add():
-    return render_template("add.html", title="Add expense")
+    form = ExpenseForm()
+    return render_template("add.html", title="Add expense", form=form)
 
 @app.route("/show")
 @login_required
 def show():
-    return render_template("show.html", title="Add expenses")
+    return render_template("show.html", title="Show expenses")
 
 @app.route("/logout")
 @login_required
