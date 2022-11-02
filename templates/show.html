@@ -1,3 +1,39 @@
 {% extends "layout.html" %}
 {% block content %}
+<div class="container d-flex align-items-center justify-content-center" id="main_container">
+    <div class="form-box border border-4 border-primary rounded p-3 w-75">
+        <h2 style="text-align: center;">Your expenses</h2>
+        <div class="table-responsive-xl">
+            <table class="table table-primary">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Vendor</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                        <tbody>
+                            {% if expense.expense_type == "Normal" %}
+                                <tr class="table-success">
+                            {% else %}
+                                <tr class="table-warning">
+                            {% endif %}
+                                    <th scope="row">{{ loop.index0 + 1 }}</th>
+                                    <td>{{ expense.product }}</td>
+                                    <td>{{ expense.price }}</td>
+                                    <td>{{ expense.vendor }}</td>
+                                    <td>{{ expense.expense_type }}</td>
+                                    <td>{{ expense.date_added.strftime("%d/%m/%Y") }}</td>
+                                </tr>
+                        </tbody>
+                    {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

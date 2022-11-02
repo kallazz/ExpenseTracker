@@ -19,8 +19,8 @@ class RegistrationForm(FlaskForm):
 
 class ExpenseForm(FlaskForm):
     date_added = DateField("Date", validators=[DataRequired()], default=datetime.today)
-    product = StringField("Product", validators=[DataRequired(), Length(max=150)])
+    product = StringField("Product", validators=[DataRequired(), Length(max=45)])
     price = DecimalField("Price", validators=[DataRequired()], places=2, rounding=None)
-    vendor = StringField("Vendor", validators=[DataRequired(), Length(max=150)])
+    vendor = StringField("Vendor", validators=[DataRequired(), Length(max=45)])
     expense_type = SelectField("Type of expense", validators=[DataRequired()], choices=[("Normal"), ("Additional")])
     submit = SubmitField("Add")

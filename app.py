@@ -111,7 +111,8 @@ def add():
 @app.route("/show")
 @login_required
 def show():
-    return render_template("show.html", title="Show expenses")
+    expenses = Expense.query.filter_by(user_id=current_user.id).all()
+    return render_template("show.html", title="Show expenses", expenses=expenses)
 
 @app.route("/logout")
 @login_required
