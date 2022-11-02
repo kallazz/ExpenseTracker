@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from sqlalchemy import Float
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, DateField, DecimalField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
+from datetime import datetime
 
 class LoginForm(FlaskForm):
     email = StringField("E-mail adress", validators=[DataRequired()])
@@ -17,9 +18,9 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField("Register")
 
 class ExpenseForm(FlaskForm):
-    date_added = DateField("Date", validators=[DataRequired()])
-    price = DecimalField("Price", validators=[DataRequired()], places=2, rounding=None)
+    date_added = DateField("Date", validators=[DataRequired()], default=datetime.today)
     product = StringField("Product", validators=[DataRequired(), Length(max=150)])
-    expense_type = SelectField("Type of expense", validators=[DataRequired()], choices=[("Normal"), ("Additional")])
+    price = DecimalField("Price", validators=[DataRequired()], places=2, rounding=None)
     vendor = StringField("Vendor", validators=[DataRequired(), Length(max=150)])
+    expense_type = SelectField("Type of expense", validators=[DataRequired()], choices=[("Normal"), ("Additional")])
     submit = SubmitField("Add")

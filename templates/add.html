@@ -10,24 +10,23 @@
                     {{ form.date_added(class="form-control") }}
                 </div>
                 <div class="form-group">
-                    {{ form.price.label }}
-                    {{ form.price(class="form-control", step="0.5") }}
-                </div>
-                <div class="form-group">
                     {{ form.product.label }}
                     {{ form.product(class="form-control") }}
                 </div>
                 <div class="form-group">
-                    {{ form.expense_type.label }}
-                    {{ form.expense_type(class="form-select") }}
+                    {{ form.price.label }}
+                    {{ form.price(class="form-control", step="0.01") }}
                 </div>
                 <div class="form-group">
                     {{ form.vendor.label }}
                     {{ form.vendor(class="form-control") }}
                 </div>
+                <div class="form-group">
+                    {{ form.expense_type.label }}
+                    {{ form.expense_type(class="form-select") }}
+                </div>
                 {{ form.submit(class="btn btn-primary mt-1") }}
             </form>
-            <small>Don't have an account yet? <a href="{{ url_for('register') }}">Register here</a></small>
         </div>
     </div>
 {% endblock %}

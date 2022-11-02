@@ -40,11 +40,11 @@ class User(db.Model, UserMixin):
 
 class Expense(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_added = db.Column(db.DateTime(), nullable=False)
-    price = db.Column(db.Float, nullable=False)
     product = db.Column(db.String(150), nullable=False)
-    expense_type = db.Column(db.String(10), nullable=False)
+    price = db.Column(db.Float, nullable=False)
     vendor = db.Column(db.String(150), nullable=False)
+    expense_type = db.Column(db.String(10), nullable=False)
+    date_added = db.Column(db.DateTime(), nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
 
 #Views
@@ -96,10 +96,16 @@ def register():
 def about():
     return render_template("about.html", title="About")
 
-@app.route("/add")
+@app.route("/add", methods=["GET", "POST"])
 @login_required
 def add():
     form = ExpenseForm()
+    if form.validate_on_submit():
+        new_expense = Expense(product=form.product.data, price=form.price.data, vendor=form.vendor.data, expense_type=form.expense_type.data, date_added=form.date_added.data, user_id=current_user.id)
+        db.session.add(new_expense)
+        db.session.commit()
+        flash("New expense successfully added!", "success")
+
     return render_template("add.html", title="Add expense", form=form)
 
 @app.route("/show")
